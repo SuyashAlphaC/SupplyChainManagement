@@ -1,66 +1,75 @@
-## Foundry
+# Supply Chain Management System
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Overview
 
-Foundry consists of:
+**This project is a comprehensive supply chain management system built using Solidity smart contracts and a React.js frontend. It allows for the tracking and management of products throughout the supply chain, including creating new products, shipping and receiving, and performing quality control checks.**
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Key Features
 
-## Documentation
+- **Product lifecycle management**: Create, ship, receive, and perform quality checks on products.
+- **Role-based access control**: Manage permissions for different participants in the supply chain.
+- **Robust data storage and tracking**: Record all product movements and quality control activities.
+- **Intuitive web-based dashboard**: Monitor supply chain status and interact with the contracts.
 
-https://book.getfoundry.sh/
+## Project Structure
 
-## Usage
+The project is organized into the following main components:
 
-### Build
+### 1. Smart Contracts
 
-```shell
-$ forge build
-```
+- **ProductManager**: Handles the creation, shipping, and receiving of products.
+- **QualityControl**: Manages the quality control process for products.
+- **RoleManager**: Handles role-based access control for the system.
+- **SupplyChainStorage**: Stores all supply chain-related data.
 
-### Test
+### 2. Front End
 
-```shell
-$ forge test
-```
+- **SupplyChainDashboard**: The main React component that displays the supply chain data and enables user interactions.
+- **Web3 integration** :
 
-### Format
+- _Web3Context_: Manages the Web3 service and provides context to the components.
+- _Web3Service_: Handles interactions with the smart contracts.
+- _hooks_: Custom hooks for managing product and quality control data.
 
-```shell
-$ forge fmt
-```
+### 3. Scripts
 
-### Gas Snapshots
+- **DeploySupplyChain.s.sol**: Foundry deployment script for the smart contracts.
+- **export-deployments.js**: Extracts deployed contract addresses and exports them to the frontend.
+- **copy-abis.js**: Copies the contract ABIs to the frontend.
 
-```shell
-$ forge snapshot
-```
+## Getting Started
 
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
+1. Set up the Foundry development environment: https://book.getfoundry.sh/getting-started/installation.html
+2. Clone the repository and navigate to the project directory.
+3. Create a .env file in the project root with the following content:
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ PRIVATE_KEY=your_private_key_here
+$ RPC_URL=your_rpc_url_here
 ```
 
-### Cast
+4. Deploy the contracts:
 
 ```shell
-$ cast <subcommand>
+# Compile contracts
+$ make build
+
+# Deploy to network
+$ make deploy args= "network-sepolia"
+
+# Export addresses to frontend
+$ node scripts/export-deployments.js
 ```
 
-### Help
+5. Start the frontend development server:
 
 ```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+# Navigate to the frontend directory
+$ cd frontend
+
+# Install dependencies and start the dev server
+$ npm install
+$ npm run dev
 ```
+
+The application should now be running
