@@ -32,9 +32,11 @@ const App = () => {
               Your Products
             </div>
             <div className=" text-[#d4d4d4]">
+            <Link to="/createproduct">
             <button className="px-4 py-2 bg-blue-600 max-h-9  hover:bg-blue-700 text-white rounded-md">
-                <Link to="/createproduct">Create New Product</Link>
+                Create New Product
             </button>
+            </Link>
             </div>
           </div>
           <hr className="my-3 z-[10] w-full max-w-[1300px] border-t-2 border-[#d4d4d4]" />
@@ -60,15 +62,19 @@ const App = () => {
 
         {/* Right Section: Buttons */}
         <div className="mt-4 md:mt-0 flex gap-2 md:self-end">
+        <Link to="/transferProduct">
             <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md">
-              <Link to="/transferProduct">
+              
               Transfer Product
-              </Link>
+              
             </button>
+            </Link>
+            <Link to="/trackProduct">
             <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md">  
-              <Link to="/trackProduct">
+             
                 Track Product
-              </Link></button>
+              </button>
+              </Link>
         </div>
         </div>
         </AccordionBody>

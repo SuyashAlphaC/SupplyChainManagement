@@ -136,6 +136,7 @@ function NavListMenu() {
 function NavList() {
   return (
     <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1">
+      <Link to="/">
       <Typography
         as="a"
         href="#"
@@ -144,12 +145,14 @@ function NavList() {
         className="font-medium"
       >
         <ListItem className="flex items-center gap-2 py-2 pr-4">
-            <Link to="/">
+            
           Home
-            </Link>
+           
         </ListItem>
       </Typography>
+      </Link>
       <NavListMenu />
+      <Link to="/dashboard">
       <Typography
         as="a"
         href="#"
@@ -158,11 +161,12 @@ function NavList() {
         className="font-medium"
       >
         <ListItem className="flex items-center gap-2 py-2 pr-4">
-            <Link to="/dashboard">
+           
           Dashboard
-            </Link>
+          
         </ListItem>
       </Typography>
+      </Link>
     </List>
   );
 }
@@ -194,18 +198,22 @@ export function NavBar() {
         </div>
         <div className="hidden gap-2 lg:flex">
         {!user && (
+            <Link to="/register">
             <Button variant="gradient" size="sm" className="cursor-pointer">
-                <Link to="/register">Get Started</Link>
+              Get Started
             </Button>
+            </Link>
         )}
          {user ? (
         <Button variant="gradient" size="sm" onClick={logout} className="cursor-pointer">
             Log Out
         </Button>
         ) : (
+          <Link to="/login">
         <Button variant="gradient" size="sm" className="cursor-pointer">
-            <Link to="/login">Login</Link>
+            Login
           </Button>
+          </Link>
         )}
         </div>
         <IconButton
