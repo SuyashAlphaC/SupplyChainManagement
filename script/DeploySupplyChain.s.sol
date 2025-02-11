@@ -27,7 +27,7 @@ contract SupplyChainDeploy is Script {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
         vm.startBroadcast(deployerPrivateKey);
-
+        roleManager = new RoleManager();
         productManager = new ProductManager();
         qualityControl = new QualityControl(address(productManager));
 
@@ -93,6 +93,7 @@ contract SupplyChainDeploy is Script {
     function _logDeployment() internal view {
         console.log("Supply Chain Management System Deployment");
         console.log("----------------------------------------");
+        console.log("RoleManager deployed to:", address(roleManager));
         console.log("ProductManager deployed to:", address(productManager));
         console.log("QualityControl deployed to:", address(qualityControl));
         console.log("----------------------------------------");

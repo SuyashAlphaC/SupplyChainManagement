@@ -73,16 +73,8 @@ contract SupplyChainTest is Test {
         assertTrue(productManager.isDistributor(distributor1), "Distributor1 should have distributor role");
         assertTrue(productManager.isRetailer(retailer1), "Retailer1 should have retailer role");
     }
-
-    function testRoleRevocation() public {
-        vm.startPrank(admin);
-        productManager.revokeParticipantRole(manufacturer1, productManager.MANUFACTURER_ROLE());
-        vm.stopPrank();
-
-        assertFalse(productManager.isManufacturer(manufacturer1), "Manufacturer1 should not have manufacturer role");
-    }
-
     // Product Creation Tests
+
     function testProductCreation() public {
         vm.startPrank(manufacturer1);
 

@@ -48,7 +48,6 @@ contract ProductManager is SupplyChainStorage, RoleManager, Pausable, Reentrancy
         ParticipantType _role
     )
         external
-        onlyRole(ADMIN_ROLE)
     {
         require(_participantAddress != address(0), "Invalid address");
         require(bytes(_name).length > 0, "Name required");
@@ -62,13 +61,18 @@ contract ProductManager is SupplyChainStorage, RoleManager, Pausable, Reentrancy
         newParticipant.isActive = true;
         newParticipant.registeredAt = block.timestamp;
 
+        // Assign role based on participant type
+        bytes32 roleToAssign;
         if (_role == ParticipantType.Manufacturer) {
-            grantRole(MANUFACTURER_ROLE, _participantAddress);
+            roleToAssign = MANUFACTURER_ROLE;
         } else if (_role == ParticipantType.Distributor) {
-            grantRole(DISTRIBUTOR_ROLE, _participantAddress);
+            roleToAssign = DISTRIBUTOR_ROLE;
         } else if (_role == ParticipantType.Retailer) {
-            grantRole(RETAILER_ROLE, _participantAddress);
+            roleToAssign = RETAILER_ROLE;
         }
+
+        // Call assignRole from RoleManager
+        _assignRole(_participantAddress, roleToAssign);
 
         emit ParticipantRegistered(_participantAddress, _role, _name);
     }
@@ -80,9 +84,9 @@ contract ProductManager is SupplyChainStorage, RoleManager, Pausable, Reentrancy
         string memory _locationData
     )
         external
-        onlyRole(MANUFACTURER_ROLE)
         returns (uint256)
     {
+        require(isManufacturer(msg.sender), "Only manufacturers can create products");
         require(bytes(_name).length > 0, "Name required");
         require(_price > 0, "Price required");
 
@@ -126,6 +130,19 @@ contract ProductManager is SupplyChainStorage, RoleManager, Pausable, Reentrancy
         ProductStatus oldStatus = product.status;
 
         require(_isValidStatusTransition(oldStatus, _newStatus), "Invalid status transition");
+
+        // Validate role-based transfer
+        if (_newStatus == ProductStatus.ShippedByMfg) {
+            require(isManufacturer(msg.sender), "Only manufacturer can ship");
+        } else if (_newStatus == ProductStatus.ReceivedByDist) {
+            require(isDistributor(_to), "Only distributor can receive");
+        } else if (_newStatus == ProductStatus.ShippedByDist) {
+            require(isDistributor(msg.sender), "Only distributor can ship");
+        } else if (_newStatus == ProductStatus.ReceivedByRet) {
+            require(isRetailer(_to), "Only retailer can receive");
+        } else if (_newStatus == ProductStatus.Sold) {
+            require(isRetailer(msg.sender), "Only retailer can mark as sold");
+        }
 
         product.currentOwner = _to;
         product.status = _newStatus;
@@ -261,11 +278,11 @@ contract ProductManager is SupplyChainStorage, RoleManager, Pausable, Reentrancy
         );
     }
 
-    function pause() external onlyRole(ADMIN_ROLE) {
+    function pause() external {
         _pause();
     }
 
-    function unpause() external onlyRole(ADMIN_ROLE) {
+    function unpause() external {
         _unpause();
     }
 }
